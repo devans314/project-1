@@ -17,3 +17,7 @@
 .game-column {
     display: inline-grid;
 }
+
+#player {
+    background-color: blue;  
+}
