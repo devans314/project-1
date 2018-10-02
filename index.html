@@ -10,26 +10,32 @@
     <title>Document</title>
 </head>
 <body>
+    <div class = 'start-game'>
+        <h1>Enter Name!</h1>
+        <input type="text">
+         <button id = 'start'>Start Game!</button>
+    </div>
     <div class = 'container'>
         <h1>Grimguard</h1>
-        <div class = 'row'>
+        <div>
             <div class = 'col-md-4'>
                 <h2>STATS</h2> 
-                <h3>
+                <h4>LVL:<span id = 'level'></span></h4>
+                <h4>
                     HP: <span id = 'health'>
 
                     </span>
-                </h3>
-                <h3>
+                </h4>
+                <h4>
                     STR: <span id = 'strength'>
 
                     </span>
-                </h3>
-                <h3>
+                </h4>
+                <h4>
                     AGI: <span id = 'agility'>
 
                     </span>
-                </h3>
+                </h4>
                 <h5>floor: <span id = 'floor'></span></h5>
             </div>
             <div class = 'col-md-8 map'>

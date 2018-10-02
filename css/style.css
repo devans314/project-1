@@ -21,3 +21,13 @@
 #player {
     background-color: blue;  
 }
+
+.start-game {
+    text-align: center;
+}
+
+#kobold {
+    background-color: red!important;
+    
+}
+

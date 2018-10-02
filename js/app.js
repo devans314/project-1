@@ -1,16 +1,45 @@
 // player object
 // players stats will change based on a function that runs through battle, 
 // and one that runs after battle to check for level ups (stat increases)
- const player = {
+const gameObjects = []
+const player = {
+    name: name,
     x: 5,
     y: 1,
     health: 10,
     strength: 4,
     agility: 3,
+    experience: 0
  }
 
-// grid map
+// button starts the game
+//  $('button').on('click', () => {
+//     const $nameInput = $('input').val();
+//     player.name = $nameInput;
+//     $('.name').text(player.name)
+   
+//  }
+//  );
 
+ class Enemy {
+     constructor(x, y, health, strength, agility) {
+        this.x = x
+        this.y = y
+        this.health = health
+        this.strength = strength
+        this.agility = agility
+     }
+ }
+
+const createKobold =()=>{
+const kobold = new Enemy (Math.ceil(Math.random()* 10), Math.ceil(Math.random()* 10), 10, 5, 6)
+$(`.square-${kobold.x}-${kobold.y}`).attr('id', 'kobold')
+console.log(kobold.x, kobold.y);
+ } 
+  
+
+
+ // grid map
 for(let y = 1; y < 11; y++){
     $('.map').append(`<div class='game-column game-column-${y}'></div>`)
     for(let x = 10; x > 0; x--){
@@ -20,16 +49,17 @@ for(let y = 1; y < 11; y++){
         $(`.game-column-${y}`).append(gridSquare)
     }
 }
+createKobold();  
 
 // event listener for key presses.  Four arrow keys will move the player around the grid.
 $('body').keydown((event)=>{
-    if(event.which == 37){
+    if(event.which == 65){
         moveLeft();
-    }else if(event.which == 39){
+    }else if(event.which == 68){
         moveRight()
-    }else if(event.which == 38){
+    }else if(event.which == 87){
         moveUp();
-    }else if(event.which == 40)
+    }else if(event.which == 83)
         moveDown();
 })
 $(`.square-5-1`).attr('id', 'player')
@@ -40,7 +70,7 @@ const moveLeft = () => {
         const currentPos = $('#player');
         currentPos.removeAttr('id');
         player.x--;
-        $(`.square-${player.x}-1`).attr('id', 'player');
+        $(`.square-${player.x}-${player.y}`).attr('id', 'player');
     }
 }
 
@@ -50,16 +80,26 @@ const moveRight = () => {
         const currentPos = $('#player');
         currentPos.removeAttr('id');
         player.x++;
-        $(`.square-${player.x}-1`).attr('id', 'player');
+        $(`.square-${player.x}-${player.y}`).attr('id', 'player');
     }
 }
 
 // function for moving up 
 const moveUp = () => {
-    if(player.y < 10){
+    if(player.y < 11){
         const currentPos = $('#player');
         currentPos.removeAttr('id');
         player.y++;
-        $(`.square-${player.y}-1`).attr('id', 'player');
+        $(`.square-${player.x}-${player.y}`).attr('id', 'player');
     }
-}
+    }
+// function for moving down
+const moveDown = () => {
+    if(player.y < 11){
+        const currentPos = $('#player');
+        currentPos.removeAttr('id');
+        player.y--;
+        $(`.square-${player.x}-${player.y}`).attr('id', 'player');
+        }
+    }
+
