@@ -3,6 +3,7 @@
 }
 .col-md-4 {
     border: 1px solid black;
+    
 }
 
 .col-md-8 {
@@ -18,6 +19,8 @@
     display: inline-grid;
 }
 
+
+
 #player {
     background-color: blue;  
 }
@@ -26,8 +29,8 @@
     text-align: center;
 }
 
-#kobold {
-    background-color: red!important;
+.kobold {
+    background-color: red;
     
 }
 

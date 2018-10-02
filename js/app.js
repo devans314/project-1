@@ -9,6 +9,7 @@ const player = {
     health: 10,
     strength: 4,
     agility: 3,
+    level: 1,
     experience: 0
  }
 
@@ -33,11 +34,21 @@ const player = {
 
 const createKobold =()=>{
 const kobold = new Enemy (Math.ceil(Math.random()* 10), Math.ceil(Math.random()* 10), 10, 5, 6)
-$(`.square-${kobold.x}-${kobold.y}`).attr('id', 'kobold')
+$(`.square-${kobold.x}-${kobold.y}`).addClass('kobold')
 console.log(kobold.x, kobold.y);
  } 
-  
 
+const statUpdate =() => {
+    $('#level').append(player.level)
+    $('#health').append(player.health)
+    $('#strength').append(player.strength)
+    $('#agility').append(player.agility)
+}
+
+
+ setInterval(statUpdate(),1000)
+
+ 
 
  // grid map
 for(let y = 1; y < 11; y++){
@@ -55,13 +66,19 @@ createKobold();
 $('body').keydown((event)=>{
     if(event.which == 65){
         moveLeft();
-    }else if(event.which == 68){
+     }
+    else if(event.which == 68){
         moveRight()
     }else if(event.which == 87){
         moveUp();
-    }else if(event.which == 83)
+    }else if(event.which == 83){
         moveDown();
-})
+    }  if($('.kobold#player').length > 0){
+        console.log('lets fight')
+
+    }
+    }      
+)
 $(`.square-5-1`).attr('id', 'player')
 
 // function for moving left
