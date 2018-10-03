@@ -1,7 +1,5 @@
-// player object
-// players stats will change based on a function that runs through battle, 
-// and one that runs after battle to check for level ups (stat increases)
-const gameObjects = []
+
+
 const player = {
     name: name,
     x: 5,
@@ -10,43 +8,63 @@ const player = {
     strength: 4,
     agility: 3,
     level: 1,
-    experience: 0
+    experience: 0,
+    attack(target){
+        target.health -= player.strength
+        if(target.health <= 0){
+            target.health = 0
+        }
+    }
  }
+console.log(player.health);
 
-// button starts the game
-//  $('button').on('click', () => {
-//     const $nameInput = $('input').val();
-//     player.name = $nameInput;
-//     $('.name').text(player.name)
-   
-//  }
-//  );
-
- class Enemy {
+class Enemy {
      constructor(x, y, health, strength, agility) {
-        this.x = x
-        this.y = y
-        this.health = health
-        this.strength = strength
-        this.agility = agility
+        this.x = x;
+        this.y = y;
+        this.health = health;
+        this.strength = strength;
+        this.agility = agility;
      }
- }
 
-const createKobold =()=>{
-const kobold = new Enemy (Math.ceil(Math.random()* 10), Math.ceil(Math.random()* 10), 10, 5, 6)
-$(`.square-${kobold.x}-${kobold.y}`).addClass('kobold')
-console.log(kobold.x, kobold.y);
- } 
-
-const statUpdate =() => {
-    $('#level').append(player.level)
-    $('#health').append(player.health)
-    $('#strength').append(player.strength)
-    $('#agility').append(player.agility)
+        attack(target){
+            target.health -= this.strength
+            if(target.health <= 0){
+                target.health = 0
+            }
+     }
 }
 
+class Event {
+    constructor(x,y) {
+        this.x = x
+        this.y = y
+    }
+    }
 
- setInterval(statUpdate(),1000)
+
+const kobold = new Enemy (Math.ceil(Math.random()* 10), Math.ceil(Math.random()* 10), 10, 5, 6)
+console.log(kobold);
+
+// function to place kobold on the map
+const placeKobold =()=>{
+    $(`.square-${kobold.x}-${kobold.y}`).addClass('kobold')
+    console.log(kobold.x, kobold.y);
+ } 
+const createHiddenEvents =()=>{
+    const hiddenEvent = new Event (Math.ceil(Math.random()* 10), Math.ceil(Math.random()* 10))
+    $(`.square-${hiddenEvent.x}-${hiddenEvent.y}`).addClass('trap')
+    console.log(hiddenEvent.x, hiddenEvent.y)
+}
+
+    
+const statUpdate =() => {
+    $('#level').text(player.level)
+    $('#health').text(player.health)
+    $('#strength').text(player.strength)
+    $('#agility').text(player.agility)
+}
+ 
 
  
 
@@ -60,26 +78,47 @@ for(let y = 1; y < 11; y++){
         $(`.game-column-${y}`).append(gridSquare)
     }
 }
-createKobold();  
+
+$(`.square-5-1`).attr('id', 'player')
+
+
+createHiddenEvents();
+
+
+placeKobold();  
 
 // event listener for key presses.  Four arrow keys will move the player around the grid.
+// also contains if checks for events such as battles and traps
 $('body').keydown((event)=>{
     if(event.which == 65){
         moveLeft();
-     }
+    }
     else if(event.which == 68){
         moveRight()
     }else if(event.which == 87){
         moveUp();
     }else if(event.which == 83){
         moveDown();
-    }  if($('.kobold#player').length > 0){
-        console.log('lets fight')
-
+    }   if($('#player').hasClass('trap')){
+        player.health -= 2
+        alert("You've stepped on a trap!");
+        $(`.square-${hiddenEvent.x}-${hiddenEvent.y}`).remove('trap')
+    }
+        if($('#player').hasClass('kobold')){
+        $(".modal").modal("show");
+        
     }
     }      
 )
-$(`.square-5-1`).attr('id', 'player')
+
+$('.attack').on('click', () => {
+    player.attack(kobold);
+    console.log(kobold.health);
+
+})
+
+
+setInterval(statUpdate,100)
 
 // function for moving left
 const moveLeft = () => {

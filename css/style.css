@@ -1,13 +1,6 @@
 .container {
     border: 3px solid black;
-}
-.col-md-4 {
-    border: 1px solid black;
-    
-}
-
-.col-md-8 {
-    border: 1px solid black;
+    text-align: center;
 }
 .square {
     height: 50px;
@@ -15,12 +8,19 @@
     background-color: black;
     margin: 1px;
 }
+
+.col-md-2 {
+    text-align: left;
+}
+.map {
+    text-align: right;
+    bottom: 50px;
+    
+}
+
 .game-column {
     display: inline-grid;
 }
-
-
-
 #player {
     background-color: blue;  
 }
