@@ -5,7 +5,7 @@
 .square {
     height: 50px;
     width: 50px;
-    background-color: black;
+    background-color: #3b3939;
     margin: 1px;
 }
 
@@ -22,7 +22,8 @@
     display: inline-grid;
 }
 #player {
-    background-color: blue;  
+    background-color: blue;
+    
 }
 
 .start-game {
@@ -30,7 +31,7 @@
 }
 
 .kobold {
-    background-color: red;
-    
+    background-image: url('../assets/kobold-icon.png'); 
+   
 }
 
