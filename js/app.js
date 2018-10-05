@@ -128,17 +128,7 @@ console.log(`trap coords ${trap.x}, ${trap.y}`)
 $(`.square-${chest.x}-${chest.y}`).addClass('chest')
 console.log(`chest coords ${chest.x}, ${chest.y}`)
     
-const createChest=()=>{
-    if(randomItem === 1){
-        alert("You found a potion!")
-        player.potion += 1
-    } else if(randomItem === 2){
-        player.strength += 3
-    } else if(randomItem === 3){
-        player.maxHealth += 4
-    }
-}
-    
+
 const statUpdate =() => {
     $('#level').text(player.level)
     $('#health').text(`${player.currentHealth}/${player.maxHealth}`)
@@ -172,12 +162,23 @@ $('body').keydown((event)=>{
                 player.currentHealth = player.maxHealth
                 alert("You've been blessed with additional health! Stay blessed!")
                 $(`.square-${healthBonus.x}-${healthBonus.y}`).removeClass('healthBonus')
+            }
         }     
         if($('#player').hasClass('chest')){
-            createChest();
+            if(randomItem === 1){
+                alert("You found a potion!")
+                player.potion += 1
+            } else if(randomItem === 2){
+                alert('You found a rusty sword!')
+                player.strength += 3
+            } else if(randomItem === 3){
+                alert('You found some armor!')
+                player.maxHealth += 4
+            }
+            $(`.square-${chest.x}-${chest.y}`).removeClass('chest')
         }
             
-        }
+        
         if($('#player').hasClass('kobold')){
         $(".modal").modal("show");
     }
@@ -243,22 +244,24 @@ const levelUp = () => {
             
         }
 }
+const removeKobold=(target)=>{
+    if(kobold.health === 0){
+        $(`.square-${target.x}-${target.y}`).removeClass('kobold')
+    } 
+}
 const koboldDeath = () => {
     if(kobold.health === 0){
         $('.log').empty();
         $('.log').text(`You gained 5 experience points!`)
         player.experience += 5
+        removeKobold(kobold)
         setTimeout(()=>{
             $('.modal').modal('hide')
             }, 2000)
             
     }
 }
-const removeKobold=()=>{
-    if(kobold.health === 0){
-        $(`.square-${kobold.x}-${kobold.y}`).removeClass('kobold')
-    } 
-}
+
 
 
 const death = () => {
@@ -273,7 +276,6 @@ setInterval(()=>{
     levelUp();
     statUpdate();
     death();
-    removeKobold();
 },100)
 
 // function for moving left
