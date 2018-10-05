@@ -1,6 +1,12 @@
 .container {
     border: 3px solid black;
     text-align: center;
+    background-image: url('../assets/dungeon-background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: beige;
+    font-family: 'VT323', monospace;
+    
 }
 .square {
     height: 50px;
@@ -11,6 +17,8 @@
 
 .col-md-2 {
     text-align: left;
+    color: beige;
+    font-family: 'VT323', monospace;
 }
 .map {
     text-align: right;
@@ -22,7 +30,8 @@
     display: inline-grid;
 }
 #player {
-    background-color: blue;
+    background-image: url('../assets/player-2.png');
+    background-repeat: no-repeat;
     
 }
 
@@ -34,4 +43,7 @@
     background-image: url('../assets/kobold-icon.png'); 
    
 }
-
+.chest {
+    background-image: url('../assets/chest.png');
+    background-repeat: no-repeat;
+}

@@ -1,11 +1,26 @@
 
+// grid map is created
+for(let y = 1; y < 11; y++){
+    $('.map').append(`<div class='game-column game-column-${y}'></div>`)
+    for(let x = 10; x > 0; x--){
+        const gridSquare = $('<div/>')
+        gridSquare.addClass('square')
+        gridSquare.addClass(`square-${y}-${x}`)
+        $(`.game-column-${y}`).append(gridSquare)
+    }
+}
+
+
 const gameObjects = []
+let randomItem = (Math.ceil(Math.random()* 3))
+console.log(`this is chest item ${randomItem}`)
 let requiredExperience = 10
 const player = {
     name: name,
     x: 5,
     y: 1,
-    health: 10,
+    currentHealth: 10,
+    maxHealth: 10,
     strength: 4,
     agility: 3,
     level: 1,
@@ -19,97 +34,122 @@ const player = {
         }
     },
     usePotion(){
-        player.health += 10
+        if(player.currentHealth += 5 > player.maxhealth){
+            player.currentHealth = player.maxHealth
+        } else {
+            player.currentHealth += 5;
+        }
     }
  }
-console.log(player.health);
+console.log(player.currentHealth);
+
 
 class Enemy {
-     constructor(x, y, health, strength, agility) {
-        this.x = x;
-        this.y = y;
+     constructor(health, strength) {
         this.health = health;
         this.strength = strength;
-        this.agility = agility;
-     }
-
-        attack(target){
-            target.health -= this.strength
-            if(target.health <= 0){
-                target.health = 0
+        let validSquareChosen = false;
+        while(!validSquareChosen){
+            let noConflicts = true;
+            let randomX = (Math.ceil(Math.random()* 10))
+            let randomY = (Math.ceil(Math.random()* 10))
+            if((randomX != player.x || randomY !=player.y)){
+                validSquareChosen = true;
+                this.x = randomX
+                this.y = randomY
+            } 
+            for(let i = 0; i < gameObjects.length; i++){
+                if(this.x != randomX || this.y != randomY){}
+                else {
+                    noConflicts = false;
+                }
+            }
+            if(noConflicts = true)
+                gameObjects.push(this);
+            }
+        }
+            attack(target){
+                target.currentHealth -= this.strength
+                if(target.currentHealth <= 0){
+                    target.currentHealth = 0
 
             }
      }
 }
 
 class Event {
-    constructor(x,y) {
+    constructor() {
         let validSquareChosen = false;
-        let noConflicts = true;
         while(!validSquareChosen){
+            let noConflicts = true;
             let randomX = (Math.ceil(Math.random()* 10))
             let randomY = (Math.ceil(Math.random()* 10))
             if((randomX != player.x || randomY !=player.y) && (randomX != kobold.x || randomY != kobold.y)){
-                    validSquareChosen = true;
-                    this.x = randomX
-                    this.y = randomY
-                    
+                validSquareChosen = true;
+                this.x = randomX
+                this.y = randomY
+            } 
+            for(let i = 0; i < gameObjects.length; i++){
+                if(this.x != randomX || this.y != randomY){}
+                else {
+                    noConflicts = false;
+                }
+            }
+            if(noConflicts = true)
+                gameObjects.push(this);
+            }
         }
-    }   
     }
-}
 
-
-const kobold = new Enemy (Math.ceil(Math.random()* 10), Math.ceil(Math.random()* 10), 10, 3, 1)
-console.log(kobold);
-
+const kobold = new Enemy(10, 3)
+const kobold2 = new Enemy(10, 3)
 // function to place kobold on the map
+
 const placeKobold =()=>{
     $(`.square-${kobold.x}-${kobold.y}`).addClass('kobold')
     console.log(`kobold coords ${kobold.x}, ${kobold.y}`);
- } 
+    $(`.square-${kobold2.x}-${kobold2.y}`).addClass('kobold')
+    console.log(`kobold2 coords ${kobold2.x},${kobold2.y}`)
+} 
+placeKobold();  
+
+
 
 const trap = new Event()
+const chest = new Event()
+const healthBonus = new Event()
+console.log(gameObjects);
 
-const placeTrap =()=>{
-    $(`.square-${trap.x}-${trap.y}`).addClass('trap')
-    console.log(`trap coords ${trap.x}, ${trap.y}`)
-}
-
-const healthBonus = new Event ()
-
-const placeHealthBonus =()=>{
-    $(`.square-${healthBonus.x}-${healthBonus.y}`).addClass('healthBonus')
-
-    console.log(`health bonus coords ${healthBonus.x}, ${healthBonus.y}`)
+$(`.square-5-1`).attr('id', 'player')
+$(`.square-${healthBonus.x}-${healthBonus.y}`).addClass('healthBonus')
+console.log(`health bonus coords ${healthBonus.x}, ${healthBonus.y}`)
+$(`.square-${trap.x}-${trap.y}`).addClass('trap')
+console.log(`trap coords ${trap.x}, ${trap.y}`)
+$(`.square-${chest.x}-${chest.y}`).addClass('chest')
+console.log(`chest coords ${chest.x}, ${chest.y}`)
+    
+const createChest=()=>{
+    if(randomItem === 1){
+        alert("You found a potion!")
+        player.potion += 1
+    } else if(randomItem === 2){
+        player.strength += 3
+    } else if(randomItem === 3){
+        player.maxHealth += 4
+    }
 }
     
 const statUpdate =() => {
     $('#level').text(player.level)
-    $('#health').text(player.health)
+    $('#health').text(`${player.currentHealth}/${player.maxHealth}`)
     $('#strength').text(player.strength)
     $('#potions').text(player.potion)
     $('#floor').text(player.floor)
 }
  
- // grid map
-for(let y = 1; y < 11; y++){
-    $('.map').append(`<div class='game-column game-column-${y}'></div>`)
-    for(let x = 10; x > 0; x--){
-        const gridSquare = $('<div/>')
-        gridSquare.addClass('square')
-        gridSquare.addClass(`square-${y}-${x}`)
-        $(`.game-column-${y}`).append(gridSquare)
-    }
-}
+ 
 
-$(`.square-5-1`).attr('id', 'player')
-
-placeTrap();
-placeHealthBonus();
-placeKobold();  
-
-// event listener for key presses.  Four arrow keys will move the player around the grid.
+// event listener for key presses.  Four keys will move the player around the grid.
 // also contains if checks for events such as battles and traps
 $('body').keydown((event)=>{
     if(event.which == 65){
@@ -122,14 +162,21 @@ $('body').keydown((event)=>{
     }else if(event.which == 83){
         moveDown();
     }   if($('#player').hasClass('trap')){
-            player.health -= 2
+            player.currentHealth -= 2
             alert("You've stepped on a trap!");
             $(`.square-${trap.x}-${trap.y}`).removeClass('trap')
-    }
+        }
         if($('#player').hasClass('healthBonus')){
-            player.health += 2
-            alert("You've been blessed with additional health! Stay blessed!")
-            $(`.square-${healthBonus.x}-${healthBonus.y}`).removeClass('healthBonus')
+            if(player.currentHealth += 2 >= player.maxHealth){
+                player.maxHealth += 2
+                player.currentHealth = player.maxHealth
+                alert("You've been blessed with additional health! Stay blessed!")
+                $(`.square-${healthBonus.x}-${healthBonus.y}`).removeClass('healthBonus')
+        }     
+        if($('#player').hasClass('chest')){
+            createChest();
+        }
+            
         }
         if($('#player').hasClass('kobold')){
         $(".modal").modal("show");
@@ -142,7 +189,12 @@ $('.potion').on('click', () => {
     if(player.potion > 0){
         player.usePotion();
         player.potion -= 1;
-    $('.log').text(`You recovered 10 health!`)
+    $('.log').text(`You recovered health!`)
+    setTimeout(()=>{
+        if(kobold.health > 0){
+            kobold.attack(player)
+    $('.log').text(`Kobold dealt ${kobold.strength} damage!`)
+        }}, 2000)
     } else {
         $('.log').text(`You don't have any potions!`)
     }
@@ -152,7 +204,7 @@ $('.attack').on('click', () => {
     $('.log').empty();
     player.attack(kobold)
         $('.log').text(`You dealt ${player.strength} damage!`)
-        enemyDeath();
+        
         console.log(`kobold health = ${kobold.health}`);
     setTimeout(()=>{
         if(kobold.health > 0){
@@ -160,6 +212,8 @@ $('.attack').on('click', () => {
     $('.log').text(`Kobold dealt ${kobold.strength} damage!`)
         }}, 2000)
         attackDisable();
+        potionDisable();
+        koboldDeath();
 })
     
 
@@ -170,24 +224,42 @@ const attackDisable=()=>{
         }
         setTimeout(enableButton,2000)
     }
+const potionDisable=()=>{
+    $('.potion').attr("disabled","disabled");
+    const enableButton=()=>{
+        $('.potion').removeAttr("disabled","disabled");
+        }   
+        setTimeout(enableButton,2000)
+    }
+
 
 const levelUp = () => {
         if(player.experience >= requiredExperience){
             player.experience = 0
             requiredExperience += 5
             player.level++
-            player.health += Math.ceil(Math.random() * 4)
+            player.maxHealth += Math.ceil(Math.random() * 4)
             player.strength += Math.ceil(Math.random() * 1)
             
         }
 }
-const enemyDeath = () => {
+const koboldDeath = () => {
     if(kobold.health === 0){
-        $('.modal').modal('hide')
-        player.experience += 10
-        $(`.square-${kobold.x}-${kobold.y}`).removeClass('kobold')
+        $('.log').empty();
+        $('.log').text(`You gained 5 experience points!`)
+        player.experience += 5
+        setTimeout(()=>{
+            $('.modal').modal('hide')
+            }, 2000)
+            
     }
 }
+const removeKobold=()=>{
+    if(kobold.health === 0){
+        $(`.square-${kobold.x}-${kobold.y}`).removeClass('kobold')
+    } 
+}
+
 
 const death = () => {
     if(player.health === 0){
@@ -201,7 +273,7 @@ setInterval(()=>{
     levelUp();
     statUpdate();
     death();
-    
+    removeKobold();
 },100)
 
 // function for moving left
